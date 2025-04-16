@@ -1,0 +1,26 @@
+1. Clean everything (services)
+
+2. TASK: Tasks module (GET, POST, PUT, DELETE)
+    - Pydantic models (task_name, task_desc, task_category)
+    - SQLAlchemy Models
+    - Task_category should be ENUMS (FITNESS, STUDY, OTHERS)
+3. Tasks module should be implemented as include_router()
+
+4. Use APIROuter() and change everything
+5. FASTAPI() add descriptions and make the route better
+
+6. DOCUMENT: Create a document module (CRUD) also implemnent a upload functionality
+    - Dont save any file, but save file name in db
+    - Pydantic (doc_name)
+    - Db models (id, doc_name)
+    - make sure document is also include_router
+
+7. Read about subprojects in FastAPI, how submodules/subprojects work in FaastAPI(https://fastapi.tiangolo.com/advanced/sub-applications/)
+
+8. Start writing tests for User module
+    - Unit tests using pytest
+    - Tests should cover all scenarios
+    - Properly configure unittests ()
+    - Check whether we need to use TestClient or not, read documentation and make a summary.
+
+9. If you have time, expand the unittests for Tasks

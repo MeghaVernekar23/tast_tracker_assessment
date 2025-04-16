@@ -1,0 +1,9 @@
+1. Seperate DB models and pydantic models
+2. db models should go into db/models/db_models.py (make sure you create a db/__init__.py file)
+3. pydantic models should go into db/models/pydantic_models.py (make sure you create a db/models/__init__.py file)
+4. Use SQLalchemy and replace the sessions
+5. Database configurations should go into db/configs.py
+6. Study about __init__.py file and why it should be created
+7. Check whether everything works
+8. Slowly add validations in the routes
+9. Try to configure debugger for fastapi
