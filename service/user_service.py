@@ -8,7 +8,10 @@ from exceptions import UserNotFoundException
 
 def get_all_user(db: Session) -> List[UsersPydantic]:
     """Get list of all Users"""
-    return db.query(Users).all()
+    users = db.query(Users).all()
+    if not users:
+        raise UserNotFoundException()
+    return users
 
 def get_user_by_id(user_id: int , db: Session) -> UsersPydantic:
     """Get list of User by user id"""

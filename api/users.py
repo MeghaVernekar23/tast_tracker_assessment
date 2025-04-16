@@ -1,22 +1,19 @@
 import traceback
-from fastapi import FastAPI, HTTPException, Query
-from pydantic import HttpUrl
+from fastapi import FastAPI, HTTPException, Query,Depends
+
 from db.sessions import get_db, create_tables
 from sqlalchemy.orm import Session
 from typing import List
-from db.models.db_models import Users
-from db.models.pydantic_models import UsersPydantic
-from db.models.pydantic_models import UserCreate
-from fastapi import Depends
-
+from db.models.pydantic_models import UsersPydantic,UserCreate
 from exceptions import UserNotFoundException
+
 from service.user_service import get_all_user
 from service.user_service import get_user_by_id
 from service.user_service import get_user_by_username
 from service.user_service import create_user
 from service.user_service import update_user_details
 from service.user_service import delete_user_detail
-import uvicorn
+
 
 app = FastAPI()
 
@@ -26,6 +23,8 @@ create_tables()
 async def get_user_details(db: Session = Depends(get_db)):
     try:
          return get_all_user(db=db)
+    except UserNotFoundException as e:
+        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
          raise HTTPException(status_code=500, detail=str(e))
    
@@ -57,7 +56,6 @@ async def update_user(user_id : int , user_data: UserCreate ,db: Session = Depen
     except UserNotFoundException as e:
         raise HTTPException(status_code=404, detail=str(e)) 
     except Exception as e:
-        traceback.print_exc()
         raise HTTPException(status_code= 500,detail= "Error Occured while updating a new user" )   
     
 
