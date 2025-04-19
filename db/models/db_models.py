@@ -1,6 +1,6 @@
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, LargeBinary
+from sqlalchemy.orm import declarative_base
 
 
 Base = declarative_base()
@@ -18,4 +18,11 @@ class Tasks(Base):
     task_name = Column(String)
     task_desc = Column(String)
     task_category = Column(String)
+
+class Documents(Base):
+    __tablename__ = "documents"    
+    document_id = Column(Integer,primary_key = True)
+    document_name = Column(String)
+    document_type = Column(String)
+    document_data = Column(LargeBinary)
 

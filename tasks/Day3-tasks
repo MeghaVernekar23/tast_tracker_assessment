@@ -1,4 +1,4 @@
-1. Clean everything (services)
+1. Clean everything (services) ---- done
 
 2. TASK: Tasks module (GET, POST, PUT, DELETE)
     - Pydantic models (task_name, task_desc, task_category)

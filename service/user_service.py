@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from db.models.db_models import Users
 from db.models.pydantic_models import UsersPydantic
-from db.models.pydantic_models import UserCreate
+from db.models.pydantic_models import UserCreatePydantic
 from exceptions import UserNotFoundException
 
 def get_all_user(db: Session) -> List[UsersPydantic]:
@@ -21,7 +21,7 @@ def get_user_by_id(user_id: int , db: Session) -> UsersPydantic:
     return user
 
 
-def get_user_by_username(user_name: int , db: Session) -> UsersPydantic:
+def get_user_by_username(user_name: str , db: Session) -> UsersPydantic:
     """Get list of User by user name"""
     user =  db.query(Users).filter(Users.user_name == user_name).all()
     if not user:
@@ -29,15 +29,16 @@ def get_user_by_username(user_name: int , db: Session) -> UsersPydantic:
     return user
 
 
-def create_user(user: UserCreate , db: Session) -> UsersPydantic:
-    """Get list of User by user name"""
-    new_user = Users(**user.dict()) 
+def create_user(user: UserCreatePydantic , db: Session) -> UsersPydantic:
+    """Create users"""
+    new_user = Users(**user.model_dump())
     db.add(new_user)
     db.commit()
+    db.refresh(new_user)
     return new_user
 
-def update_user_details(user_id: int, user_data:UserCreate, db: Session)-> UsersPydantic:
-    
+def update_user_details(user_id: int, user_data:UserCreatePydantic, db: Session)-> UsersPydantic:
+    """update users"""
     user =  db.get(Users, user_id)
     if not user:
          raise UserNotFoundException()
@@ -49,9 +50,10 @@ def update_user_details(user_id: int, user_data:UserCreate, db: Session)-> Users
     return user
    
 def delete_user_detail(user_id: int,db: Session)->str:
+    """Delete users"""
     user =  db.get(Users, user_id)
     if not user:
          raise UserNotFoundException()
     db.delete(user)
     db.commit()
-    return "user deleted Successfully"
+    return {"message": "User deleted successfully"}

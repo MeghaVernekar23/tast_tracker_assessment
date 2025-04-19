@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from enum import Enum
 from typing import List
@@ -7,7 +7,9 @@ class UsersPydantic(BaseModel):
     user_name: str
     user_address: str
     user_phone_no: str
-class UserCreate(BaseModel):
+
+    model_config = ConfigDict(from_attributes=True)
+class UserCreatePydantic(BaseModel):
     user_name: str
     user_address: Optional[str]
     user_phone_no: str    
@@ -23,8 +25,19 @@ class TasksPydantic(BaseModel):
     task_desc : str
     task_category : TaskCategoryEnum 
 
-class TaskCreate(BaseModel):
+class TaskCreatePydantic(BaseModel):
     task_name: str
     task_desc: Optional[str]
-    task_category: TaskCategoryEnum        
+    task_category: TaskCategoryEnum   
+
+class DocumentType(Enum):
+    PDF =  "pdf"
+    TEXT = "txt" 
+
+class DocumentPydantic(BaseModel):
+    document_id : int
+    document_name : str
+    document_type : DocumentType
+    document_data : str
+
 
