@@ -1,0 +1,10 @@
+1. Make sure the coverage is almost 95%
+2. Create a login module for the backend.
+    - Just like how you did Users and Tasks
+    - You need Login CRUD
+    - Every route needs to be only accessible if the credentials are proper
+    - Check how this is done, use JWT tokens.
+    - Not a single route should work if its not authenticated.
+3. Create a frontend/ directory outside the app and install react.js
+4. Check how to install the boilerplate templates(folder structures and all..)
+5. Run react.js
