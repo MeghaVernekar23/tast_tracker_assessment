@@ -1,0 +1,13 @@
+After Day4 tasks are completed
+
+1. Check if the react.js bolierplate is displaying a welcome page
+2. Create a folder called backend/ and move all backend related code to this folder
+3. Create a docker file in the backend folder which should run the backend service successfully
+    - Check if the code is run in the container
+    - Check if you are able to access the Swagger documentation on the localhost
+    - All functionalities should work as intended
+4. Try to remove all welcome elemnts in reacgtJs and make sure the page Displays "MEGHA REACTJS DEV"
+5. Read about docker-compose.yaml file and why we need docker-compose.yml
+6. Create two small input elements USERNAME, PASSWORD and a submit button
+7. Once the submit button is clicked, the backend service needs to be called and the username and password must be verified.
+8. Once successfully verified just return "USER EXISTS" in the frontend.
