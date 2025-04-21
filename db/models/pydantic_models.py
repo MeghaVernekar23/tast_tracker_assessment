@@ -7,12 +7,15 @@ class UsersPydantic(BaseModel):
     user_name: str
     user_address: str
     user_phone_no: str
+    user_email: str
 
     model_config = ConfigDict(from_attributes=True)
 class UserCreatePydantic(BaseModel):
     user_name: str
     user_address: Optional[str]
-    user_phone_no: str    
+    user_phone_no: str
+    user_email: str
+    user_password: str    
 
 class TaskCategoryEnum(str,Enum):
      FITNESS = "fitness"
@@ -40,4 +43,10 @@ class DocumentPydantic(BaseModel):
     document_type : DocumentType
     document_data : str
 
+class UserLogin(BaseModel):
+    user_email: str
+    password: str
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str

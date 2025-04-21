@@ -11,6 +11,8 @@ class Users(Base):
     user_name = Column(String)
     user_address = Column(String)
     user_phone_no = Column(String, unique=True)
+    user_email = Column(String, unique=True)
+    password = Column(String)
 
 class Tasks(Base):
     __tablename__ = "tasks"
