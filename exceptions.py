@@ -21,3 +21,18 @@ class FileNotFoundException(Exception):
     def __init__(self):
         self.message = "Requested document does not exist"
         super().__init__((self.message))  
+
+
+
+class UserAlreadyExistsException(Exception):
+
+    def __init__(self):
+        self.message = "User email already exists"
+        super().__init__((self.message))          
+
+
+class InvalidCredentialException(Exception):
+
+    def __init__(self):
+        self.message = "Invalid Credential"
+        super().__init__((self.message))    
