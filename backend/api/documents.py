@@ -1,11 +1,11 @@
 from click import File
 from fastapi import APIRouter, HTTPException, UploadFile, Depends
-from db.sessions import get_db, create_tables
+from backend.db.sessions import get_db, create_tables
 from sqlalchemy.orm import Session
-from db.models.db_models import Documents
-from service.document_service import save_document, document_download
-from exceptions import DuplicateFileException, FileNotFoundException
-from service.auth import get_current_user
+from backend.db.models.db_models import Documents
+from backend.service.document_service import save_document, document_download
+from backend.exceptions import DuplicateFileException, FileNotFoundException
+from backend.service.auth import get_current_user
 
 
 document_router = APIRouter()

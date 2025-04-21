@@ -4,8 +4,8 @@ from urllib import response
 from fastapi.testclient import TestClient
 from db.models.pydantic_models import UsersPydantic, UserCreatePydantic
 from db.sessions import get_db
-from main import app
-from main import user_router
+from backend.main import app
+from backend.main import user_router
 from pytest import MonkeyPatch
 
 app.include_router(user_router)

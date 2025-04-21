@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from db.models.db_models import Base
+from backend.db.models.db_models import Base
 
 DATABASE_URL = "sqlite:///./tasktracker.db"
 engine = create_engine(DATABASE_URL, echo=True)

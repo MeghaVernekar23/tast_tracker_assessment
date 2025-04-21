@@ -4,7 +4,7 @@ import pytest
 from service.user_service import get_all_user, get_user_by_id, get_user_by_username,create_user, update_user_details, delete_user_detail
 from db.models.db_models import Users
 from unittest.mock import MagicMock
-from exceptions import UserNotFoundException
+from backend.exceptions import UserNotFoundException
 from db.models.pydantic_models import UserCreatePydantic
 
 mock_users = Users(user_id = 1,user_name = "Megha", user_address = "Mysore", user_phone_no = "9977664463")

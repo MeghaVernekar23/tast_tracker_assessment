@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 import pytest
 from service.task_service import get_all_tasks, create_task, update_task_detail, delete_task_detail
 from db.models.db_models import Tasks
-from exceptions import TaskNotFoundException
+from backend.exceptions import TaskNotFoundException
 
 mock_tasks = Tasks(task_id = 1, task_name = "Studying", task_desc = 'Studying', task_category = 'others')
 

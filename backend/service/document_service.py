@@ -1,7 +1,7 @@
 
-from db.models.db_models import Documents
+from backend.db.models.db_models import Documents
 from sqlalchemy.orm import Session
-from exceptions import DuplicateFileException, FileNotFoundException
+from backend.exceptions import DuplicateFileException, FileNotFoundException
 from fastapi.responses import StreamingResponse
 import io
 

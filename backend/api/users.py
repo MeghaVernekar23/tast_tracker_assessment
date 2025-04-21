@@ -1,20 +1,20 @@
 
 from fastapi import APIRouter, HTTPException, Query,Depends
 
-from db.sessions import get_db, create_tables
+from backend.db.sessions import get_db, create_tables
 from sqlalchemy.orm import Session
 from typing import List
-from db.models.pydantic_models import Token, UserLogin, UsersPydantic,UserCreatePydantic
-from exceptions import UserAlreadyExistsException, UserNotFoundException, InvalidCredentialException
+from backend.db.models.pydantic_models import Token, UserLogin, UsersPydantic,UserCreatePydantic
+from backend.exceptions import UserAlreadyExistsException, UserNotFoundException, InvalidCredentialException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from service.user_service import get_all_user
-from service.user_service import get_user_by_id
-from service.user_service import get_user_by_username
-from service.user_service import create_user
-from service.user_service import update_user_details
-from service.user_service import delete_user_detail, get_user_by_user_email
-from service.auth import get_current_user
+from backend.service.user_service import get_all_user
+from backend.service.user_service import get_user_by_id
+from backend.service.user_service import get_user_by_username
+from backend.service.user_service import create_user
+from backend.service.user_service import update_user_details
+from backend.service.user_service import delete_user_detail, get_user_by_user_email
+from backend.service.auth import get_current_user
 
 user_router = APIRouter()
 

@@ -1,13 +1,13 @@
-from db.models.pydantic_models import UserLogin, UsersPydantic
+from backend.db.models.pydantic_models import UserLogin, UsersPydantic
 from sqlalchemy.orm import Session
 from typing import List
-from db.models.db_models import Users
-from db.models.pydantic_models import UsersPydantic
-from db.models.pydantic_models import UserCreatePydantic
-from exceptions import UserNotFoundException, UserAlreadyExistsException
+from backend.db.models.db_models import Users
+from backend.db.models.pydantic_models import UsersPydantic
+from backend.db.models.pydantic_models import UserCreatePydantic
+from backend.exceptions import UserNotFoundException, UserAlreadyExistsException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from service.auth import hash_password, create_access_token, verify_password
+from backend.service.auth import hash_password, create_access_token, verify_password
 
 def get_all_user(db: Session) -> List[UsersPydantic]:
     """Get list of all Users"""

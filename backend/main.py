@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from api.users import user_router
-from api.tasks import task_router
-from api.documents import document_router
+from backend.api.users import user_router
+from backend.api.tasks import task_router
+from backend.api.documents import document_router
 
 app = FastAPI(title="Task Tracker API",
     description="Task Tracker API",)
