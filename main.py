@@ -7,6 +7,6 @@ app = FastAPI(title="Task Tracker API",
     description="Task Tracker API",)
 
 
-app.include_router(user_router,prefix="/users")
+app.include_router(user_router)
 app.include_router(task_router,prefix="/tasks")
 app.include_router(document_router,prefix="/documents")
