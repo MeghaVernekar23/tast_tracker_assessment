@@ -3,7 +3,7 @@ from db.models.db_models import Documents
 from unittest.mock import MagicMock
 import pytest
 from service.document_service import save_document
-from backend.exceptions import DuplicateFileException
+from exceptions import DuplicateFileException
 
 
 @pytest.fixture

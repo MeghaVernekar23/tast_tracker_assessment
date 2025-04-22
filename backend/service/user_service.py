@@ -1,13 +1,13 @@
-from backend.db.models.pydantic_models import UserLogin, UsersPydantic
+from db.models.pydantic_models import UserLogin, UsersPydantic
 from sqlalchemy.orm import Session
 from typing import List
-from backend.db.models.db_models import Users
-from backend.db.models.pydantic_models import UsersPydantic
-from backend.db.models.pydantic_models import UserCreatePydantic
-from backend.exceptions import UserNotFoundException, UserAlreadyExistsException
+from db.models.db_models import Users
+from db.models.pydantic_models import UsersPydantic
+from db.models.pydantic_models import UserCreatePydantic
+from exceptions import UserNotFoundException, UserAlreadyExistsException, InvalidCredentialException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.service.auth import hash_password, create_access_token, verify_password
+from service.auth import hash_password, create_access_token, verify_password
 
 def get_all_user(db: Session) -> List[UsersPydantic]:
     """Get list of all Users"""
@@ -32,11 +32,20 @@ def get_user_by_username(user_name: str , db: Session) -> UsersPydantic:
     return user
 
 def get_user_by_user_email(user: OAuth2PasswordRequestForm , db: Session) -> dict:
-    """Get list of User by user name"""
+  
+    print("Login attempt with:", user.username)
     user_detail =  db.query(Users).filter(Users.user_email == user.username).first()
 
-    if not user_detail or not verify_password(user.password, user_detail.password):
-        raise UserAlreadyExistsException
+    if not user_detail:
+        raise InvalidCredentialException("Invalid username")
+    
+    print("✅ User found:", user_detail.user_email)
+    
+    if not verify_password(user.password, user_detail.password):
+        print("❌ Password mismatch")
+        raise InvalidCredentialException("Invalid password")
+
+    print("✅ everything is fine")   
     
     access_token = create_access_token(data={"sub": user_detail.user_name})
     return {"access_token": access_token, "token_type": "bearer"}
@@ -45,6 +54,7 @@ def get_user_by_user_email(user: OAuth2PasswordRequestForm , db: Session) -> dic
 def create_user(user: UserCreatePydantic , db: Session) -> dict:
     """Create users"""
     existing_user = db.query(Users).filter(Users.user_email == user.user_email).first()
+
 
     if existing_user:
         raise UserAlreadyExistsException()

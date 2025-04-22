@@ -1,20 +1,20 @@
 
 from fastapi import APIRouter, HTTPException, Query,Depends
 
-from backend.db.sessions import get_db, create_tables
+from db.sessions import get_db, create_tables
 from sqlalchemy.orm import Session
 from typing import List
-from backend.db.models.pydantic_models import Token, UserLogin, UsersPydantic,UserCreatePydantic
-from backend.exceptions import UserAlreadyExistsException, UserNotFoundException, InvalidCredentialException
+from db.models.pydantic_models import Token, UserLogin, UsersPydantic,UserCreatePydantic
+from exceptions import UserAlreadyExistsException, UserNotFoundException, InvalidCredentialException
 from fastapi.security import OAuth2PasswordRequestForm
 
-from backend.service.user_service import get_all_user
-from backend.service.user_service import get_user_by_id
-from backend.service.user_service import get_user_by_username
-from backend.service.user_service import create_user
-from backend.service.user_service import update_user_details
-from backend.service.user_service import delete_user_detail, get_user_by_user_email
-from backend.service.auth import get_current_user
+from service.user_service import get_all_user
+from service.user_service import get_user_by_id
+from service.user_service import get_user_by_username
+from service.user_service import create_user
+from service.user_service import update_user_details
+from service.user_service import delete_user_detail, get_user_by_user_email
+from service.auth import get_current_user
 
 user_router = APIRouter()
 
@@ -58,6 +58,7 @@ async def add_user(user: UserCreatePydantic ,db: Session = Depends(get_db)):
     
 @user_router.post("/users/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    print("inside login")
     try:
         return get_user_by_user_email(user= form_data, db= db)
     except InvalidCredentialException as e:

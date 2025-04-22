@@ -1,9 +1,9 @@
 
 from typing import List
 from sqlalchemy.orm import Session
-from backend.db.models.db_models import Tasks
-from backend.db.models.pydantic_models import TasksPydantic, TaskCreatePydantic
-from backend.exceptions import TaskNotFoundException
+from db.models.db_models import Tasks
+from db.models.pydantic_models import TasksPydantic, TaskCreatePydantic
+from exceptions import TaskNotFoundException
 
 
 def get_all_tasks(db: Session)-> List[TasksPydantic]:
