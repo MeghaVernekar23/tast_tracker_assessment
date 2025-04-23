@@ -1,8 +1,8 @@
 After Day4 tasks are completed
 
-1. Check if the react.js bolierplate is displaying a welcome page
-2. Create a folder called backend/ and move all backend related code to this folder
-3. Create a docker file in the backend folder which should run the backend service successfully
+1. Check if the react.js bolierplate is displaying a welcome page--done
+2. Create a folder called backend/ and move all backend related code to this folder--done
+3. Create a docker file in the backend folder which should run the backend service successfully--done
     - Check if the code is run in the container
     - Check if you are able to access the Swagger documentation on the localhost
     - All functionalities should work as intended
