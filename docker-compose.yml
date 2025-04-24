@@ -19,6 +19,5 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend:/frontend  
-      - /frontend/node_modules         
+      - ./frontend:/frontend         
     command: npm run dev -- --host
