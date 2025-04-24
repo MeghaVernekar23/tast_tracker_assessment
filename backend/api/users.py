@@ -49,6 +49,7 @@ async def get_user_by_name(user_name: str = Query(...), db: Session = Depends(ge
 
 @user_router.post("/users/signup",response_model= Token)
 async def add_user(user: UserCreatePydantic ,db: Session = Depends(get_db)):
+    
     try:
         return create_user(user=user,db=db)
     except UserAlreadyExistsException as e:
@@ -58,7 +59,7 @@ async def add_user(user: UserCreatePydantic ,db: Session = Depends(get_db)):
     
 @user_router.post("/users/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    print("inside login")
+    
     try:
         return get_user_by_user_email(user= form_data, db= db)
     except InvalidCredentialException as e:
