@@ -1,5 +1,5 @@
 1. Make sure the coverage is almost 95%
-2. Create a login module for the backend.
+2. Create a login module for the 
     - Just like how you did Users and Tasks
     - You need Login CRUD
     - Every route needs to be only accessible if the credentials are proper
