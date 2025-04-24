@@ -1,0 +1,9 @@
+- Now that the user is being able to login, create a small dashboard
+    - A page with just a nav bar and a table below
+    - This table must contain all the tasks of the user
+- Fetch some tasks and display in table
+- Add some tasks from UI 
+- Create a pipeline file with these stages
+    - test stage - pytest should run
+    - build stage - docker builds should happen
+    - check - Check health /health endpoint and see if you recive a proper response back
