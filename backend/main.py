@@ -18,5 +18,5 @@ app.add_middleware(
 
 
 app.include_router(user_router)
-app.include_router(task_router,prefix="/tasks")
+app.include_router(task_router)
 app.include_router(document_router,prefix="/documents")
