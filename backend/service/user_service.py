@@ -41,8 +41,8 @@ def get_user_by_user_email(user: OAuth2PasswordRequestForm , db: Session) -> dic
     
     if not verify_password(user.password, user_detail.password): 
         raise InvalidCredentialException("Invalid password")
-   
-    access_token = create_access_token(data={"sub": user_detail.user_name})
+    
+    access_token = create_access_token(data={"sub": user_detail.user_email})
     return {"access_token": access_token, "token_type": "bearer"}
 
 

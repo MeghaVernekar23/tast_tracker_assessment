@@ -20,9 +20,9 @@ user_router = APIRouter()
 
 create_tables()
 
-@user_router.get("/users/currentuser")
+@user_router.get("/users/me")
 async def read_protected_data(current_user: str = Depends(get_current_user)):
-    return {"message": f"Hello {current_user}, you are authenticated!"}
+    return {"user_email": current_user}
 
 @user_router.get("/users",response_model = List[UsersPydantic], dependencies=[Depends(get_current_user)])    
 async def get_user_details(db: Session = Depends(get_db)):
