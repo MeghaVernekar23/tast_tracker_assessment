@@ -1,7 +1,8 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from enum import Enum
-from typing import List
+from datetime import datetime
+
 class UsersPydantic(BaseModel):
     user_id: int
     user_name: str
@@ -10,6 +11,8 @@ class UsersPydantic(BaseModel):
     user_email: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
 class UserCreatePydantic(BaseModel):
     user_name: str
     user_address: Optional[str]
@@ -32,6 +35,20 @@ class TaskCreatePydantic(BaseModel):
     task_name: str
     task_desc: Optional[str]
     task_category: TaskCategoryEnum   
+
+class TaskStatusEnum(str, Enum):
+    Pending = "Pending"
+    In_progress = "In Progress"
+    Completed = "Completed"    
+
+class UserTaskPydantic(BaseModel):
+    task_id: int
+    task_name: str
+    task_desc: Optional[str]
+    task_category: TaskCategoryEnum
+    due_date: Optional[datetime]
+    status: TaskStatusEnum
+
 
 class DocumentType(Enum):
     PDF =  "pdf"

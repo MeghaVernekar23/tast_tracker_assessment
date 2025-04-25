@@ -1,9 +1,33 @@
 
 from typing import List
 from sqlalchemy.orm import Session
-from db.models.db_models import Tasks
-from db.models.pydantic_models import TasksPydantic, TaskCreatePydantic
-from exceptions import TaskNotFoundException
+from db.models.db_models import Tasks, Users, UserTask
+from db.models.pydantic_models import TasksPydantic, TaskCreatePydantic, UserTaskPydantic
+from exceptions import TaskNotFoundException, UserNotFoundException
+
+def get_user_tasks_details(user_email: str, db: Session):
+    user = db.query(Users).filter(Users.user_email == user_email).first()
+    if not user:
+        raise UserNotFoundException()
+
+    user_tasks = (
+        db.query(UserTask)
+        .join(UserTask.task)
+        .filter(UserTask.user_id == user.user_id)
+        .all()
+    )
+
+    return [
+        UserTaskPydantic(
+            task_id=ut.task.task_id,
+            task_name=ut.task.task_name,
+            task_desc=ut.task.task_desc,
+            task_category=ut.task.task_category,
+            due_date=ut.due_date,
+            status=ut.status
+        )
+        for ut in user_tasks
+    ]
 
 
 def get_all_tasks(db: Session)-> List[TasksPydantic]:
