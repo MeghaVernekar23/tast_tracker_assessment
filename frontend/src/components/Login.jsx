@@ -1,47 +1,56 @@
 // src/Login.js
-import { useState } from 'react';
-import { apiRequest } from '../utils/Apirequest';
-import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import { useState } from "react";
+import { apiRequest } from "../utils/Apirequest";
+import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function Login() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [signupData, setSignupData] = useState({
-    user_name: '',
-    user_email: '',
-    user_phone_no: '',
-    user_address: '',
-    user_password: ''
+    user_name: "",
+    user_email: "",
+    user_phone_no: "",
+    user_address: "",
+    user_password: "",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new URLSearchParams();
-      formData.append('username', email);
-      formData.append('password', password);
+      formData.append("username", email);
+      formData.append("password", password);
 
       const data = await apiRequest({
-        url: 'http://localhost:8000/users/login',
-        method: 'POST',
+        url: "http://localhost:8000/users/login",
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: formData.toString(),
       });
 
-      console.log('Login successful:', data);
+      console.log("Login successful:", data);
       alert("Login successful!");
 
-    
-      navigate('/dashboard');
+      const user_email = await apiRequest({
+        url: "http://localhost:8000/users/me",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${data.access_token}`,
+        },
+      });
 
+      localStorage.setItem("current_user", JSON.stringify(user_email));
+      localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("token_type", data.token_type);
+
+      navigate("/dashboard");
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error("Error during login:", error);
       alert(`Something went wrong: ${error.message}`);
     }
   };
@@ -54,8 +63,8 @@ function Login() {
     e.preventDefault();
     try {
       await apiRequest({
-        url: 'http://localhost:8000/users/signup',
-        method: 'POST',
+        url: "http://localhost:8000/users/signup",
+        method: "POST",
         body: {
           user_name: signupData.user_name,
           user_email: signupData.user_email,
@@ -66,7 +75,6 @@ function Login() {
       });
 
       alert("Signup successful!");
-
     } catch (error) {
       alert(`Signup failed: ${error.message}`);
     }
@@ -74,18 +82,20 @@ function Login() {
 
   const clearSignupForm = () => {
     setSignupData({
-      user_name: '',
-      user_email: '',
-      user_phone_no: '',
-      user_address: '',
-      user_password: ''
+      user_name: "",
+      user_email: "",
+      user_phone_no: "",
+      user_address: "",
+      user_password: "",
     });
   };
-  
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh', width: '100vw' }}>
-      <div className="card p-4 shadow" style={{ minWidth: '500px' }}>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "100vh", width: "100vw" }}
+    >
+      <div className="card p-4 shadow" style={{ minWidth: "500px" }}>
         <h1 className="text-center mb-4">Login Page</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
@@ -123,12 +133,19 @@ function Login() {
         </button>
       </div>
 
-      <div className="modal fade" id="signupModal" tabIndex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+      <div
+        className="modal fade"
+        id="signupModal"
+        tabIndex="-1"
+        aria-labelledby="signupModalLabel"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="signupModalLabel">Signup</h5>
-             
+              <h5 className="modal-title" id="signupModalLabel">
+                Signup
+              </h5>
             </div>
             <form onSubmit={handleSignupSubmit}>
               <div className="modal-body">
@@ -174,13 +191,18 @@ function Login() {
                 />
               </div>
               <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={clearSignupForm }>
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Create Account
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  onClick={clearSignupForm}
+                >
+                  Close
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Create Account
+                </button>
+              </div>
             </form>
           </div>
         </div>
