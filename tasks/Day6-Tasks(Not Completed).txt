@@ -7,3 +7,4 @@
     - test stage - pytest should run
     - build stage - docker builds should happen
     - check - Check health /health endpoint and see if you recive a proper response back
+- Check how to reuse components in react
