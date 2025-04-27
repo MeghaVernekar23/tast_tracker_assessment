@@ -23,6 +23,7 @@ def get_user_tasks_details(user_email: str, db: Session):
             task_name=ut.task.task_name,
             task_desc=ut.task.task_desc,
             task_category=ut.task.task_category,
+            assigned_date = ut.assigned_date,
             due_date=ut.due_date,
             status=ut.status
         )
