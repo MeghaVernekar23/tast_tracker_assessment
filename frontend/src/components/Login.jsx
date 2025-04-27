@@ -16,6 +16,16 @@ function Login() {
     user_address: "",
     user_password: "",
   });
+  const [loginAlert, setLoginAlert] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
+  const [signupAlert, setSignupAlert] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +44,6 @@ function Login() {
       });
 
       console.log("Login successful:", data);
-      alert("Login successful!");
 
       const user_email = await apiRequest({
         url: "http://localhost:8000/users/me",
@@ -48,10 +57,21 @@ function Login() {
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("token_type", data.token_type);
 
+      setLoginAlert({
+        show: true,
+        message: "Login Successful !!",
+        type: "success",
+      });
+
       navigate("/dashboard");
     } catch (error) {
       console.error("Error during login:", error);
-      alert(`Something went wrong: ${error.message}`);
+      setLoginAlert({
+        show: true,
+        message:
+          "Error occured while login. Please check user email and password",
+        type: "danger",
+      });
     }
   };
 
@@ -74,9 +94,18 @@ function Login() {
         },
       });
 
-      alert("Signup successful!");
+      setSignupAlert({
+        show: true,
+        message: "User Created Successfully!",
+        type: "success",
+      });
     } catch (error) {
       alert(`Signup failed: ${error.message}`);
+      setSignupAlert({
+        show: true,
+        message: "User email already exist. Login instead!",
+        type: "danger",
+      });
     }
   };
 
@@ -105,6 +134,7 @@ function Login() {
               className="form-control w-100 mx-auto"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -115,10 +145,11 @@ function Login() {
               className="form-control w-100 mx-auto"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
-          <button className="btn btn-success mt-4 w-100" type="submit">
+          <button className="btn btn-outline-success mt-4 w-100" type="submit">
             Login
           </button>
         </form>
@@ -131,6 +162,11 @@ function Login() {
         >
           Signup
         </button>
+        {loginAlert.show && (
+          <div className={`alert alert-${loginAlert.type} mt-3`} role="alert">
+            {loginAlert.message}
+          </div>
+        )}
       </div>
 
       <div
@@ -149,6 +185,14 @@ function Login() {
             </div>
             <form onSubmit={handleSignupSubmit}>
               <div className="modal-body">
+                {signupAlert.show && (
+                  <div
+                    className={`alert alert-${signupAlert.type}`}
+                    role="alert"
+                  >
+                    {signupAlert.message}
+                  </div>
+                )}
                 <input
                   type="text"
                   name="user_name"
@@ -156,6 +200,7 @@ function Login() {
                   placeholder="Username"
                   value={signupData.user_name}
                   onChange={handleSignupChange}
+                  required
                 />
                 <input
                   type="email"
@@ -164,6 +209,7 @@ function Login() {
                   placeholder="Email"
                   value={signupData.user_email}
                   onChange={handleSignupChange}
+                  required
                 />
                 <input
                   type="text"
@@ -172,6 +218,8 @@ function Login() {
                   placeholder="Phone"
                   value={signupData.user_phone_no}
                   onChange={handleSignupChange}
+                  pattern="^\+?[0-9]*$"
+                  required
                 />
                 <input
                   type="text"
@@ -180,6 +228,7 @@ function Login() {
                   placeholder="Place"
                   value={signupData.user_address}
                   onChange={handleSignupChange}
+                  required
                 />
                 <input
                   type="password"
@@ -188,18 +237,19 @@ function Login() {
                   placeholder="Password"
                   value={signupData.user_password}
                   onChange={handleSignupChange}
+                  required
                 />
               </div>
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-outline-dark"
                   data-bs-dismiss="modal"
                   onClick={clearSignupForm}
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-outline-primary">
                   Create Account
                 </button>
               </div>
