@@ -61,7 +61,8 @@ async def add_user(user: UserCreatePydantic ,db: Session = Depends(get_db)):
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     
     try:
-        return get_user_by_user_email(user= form_data, db= db)
+        result = get_user_by_user_email(user= form_data, db= db)
+        return result
     except InvalidCredentialException as e:
         raise HTTPException(status_code=401, detail=str(e))
     except Exception as e:
