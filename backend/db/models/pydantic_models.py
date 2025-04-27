@@ -46,6 +46,7 @@ class UserTaskPydantic(BaseModel):
     task_name: str
     task_desc: Optional[str]
     task_category: TaskCategoryEnum
+    assigned_date: Optional[datetime]
     due_date: Optional[datetime]
     status: TaskStatusEnum
 

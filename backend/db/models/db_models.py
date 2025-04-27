@@ -12,6 +12,7 @@ class UserTask(Base):
     __tablename__ = "user_tasks"
     user_id = Column(Integer, ForeignKey("users.user_id"), primary_key=True)
     task_id = Column(Integer, ForeignKey("tasks.task_id"), primary_key=True)
+    assigned_date = Column(DateTime)
     due_date = Column(DateTime)
     status = Column(SQLAlchemyEnum(TaskStatusEnum), default=TaskStatusEnum.Pending)
 
