@@ -1,4 +1,4 @@
-from db.models.pydantic_models import UserLogin, UsersPydantic
+from db.models.pydantic_models import  UsersPydantic
 from sqlalchemy.orm import Session
 from typing import List
 from db.models.db_models import Users
@@ -16,28 +16,11 @@ def get_all_user(db: Session) -> List[UsersPydantic]:
         raise UserNotFoundException()
     return users
 
-def get_user_by_id(user_id: int , db: Session) -> UsersPydantic:
-    """Get list of User by user id"""
-    user =  db.get(Users, user_id)
-    if not user:
-        raise UserNotFoundException()
-    return user
-
-
-def get_user_by_username(user_name: str , db: Session) -> UsersPydantic:
-    """Get list of User by user name"""
-    user =  db.query(Users).filter(Users.user_name == user_name).all()
-    if not user:
-        raise UserNotFoundException()
-    return user
 
 def get_user_by_user_email(user: OAuth2PasswordRequestForm , db: Session) -> dict:
-  
-    print("Login attempt with:", user.username)
+    
     user_detail =  db.query(Users).filter(Users.user_email == user.username).first()
-
     if not user_detail:
-        print("Invalid user details")
         raise InvalidCredentialException("Invalid username. Please enter Valid email Id")   
     
     if not verify_password(user.password, user_detail.password): 
@@ -48,14 +31,11 @@ def get_user_by_user_email(user: OAuth2PasswordRequestForm , db: Session) -> dic
 
 
 def create_user(user: UserCreatePydantic , db: Session) -> dict:
-    """Create users"""
+    
     existing_user = db.query(Users).filter(Users.user_email == user.user_email).first()
-
     if existing_user:
         raise UserAlreadyExistsException()
-    
     hashed_pwd = hash_password(user.user_password)
-
     new_user_data = Users(user_name=user.user_name,user_address=user.user_address,
                      user_phone_no=user.user_phone_no,user_email=user.user_email,password=hashed_pwd)
     
@@ -63,11 +43,10 @@ def create_user(user: UserCreatePydantic , db: Session) -> dict:
     db.commit()
     db.refresh(new_user_data)
     access_token = create_access_token(data={"sub": new_user_data.user_name})
-
     return {"access_token": access_token, "token_type": "bearer"}
 
 def update_user_details(user_id: int, user_data:UserCreatePydantic, db: Session)-> UsersPydantic:
-    """update users"""
+    
     user =  db.get(Users, user_id)
     if not user:
          raise UserNotFoundException()

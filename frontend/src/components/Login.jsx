@@ -16,16 +16,28 @@ function Login() {
     user_address: "",
     user_password: "",
   });
-  const [loginAlert, setLoginAlert] = useState({
+
+  const [alert, setAlert] = useState({
     show: false,
     message: "",
     type: "success",
   });
-  const [signupAlert, setSignupAlert] = useState({
-    show: false,
-    message: "",
-    type: "success",
-  });
+
+  const showAlert = (message, type = "success") => {
+    setAlert({
+      show: true,
+      message: message,
+      type: type,
+    });
+
+    setTimeout(() => {
+      setAlert({
+        show: false,
+        message: "",
+        type: "success",
+      });
+    }, 2000);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,22 +68,14 @@ function Login() {
       localStorage.setItem("current_user", JSON.stringify(user_email));
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("token_type", data.token_type);
-
-      setLoginAlert({
-        show: true,
-        message: "Login Successful !!",
-        type: "success",
-      });
+      showAlert("Login Successful !!", "success");
 
       navigate("/dashboard");
     } catch (error) {
       console.error("Error during login:", error);
-      setLoginAlert({
-        show: true,
-        message:
-          "Error occured while login. Please check user email and password",
-        type: "danger",
-      });
+      showAlert(
+        "Error occured while login. Please check user email and password"
+      );
     }
   };
 
@@ -93,19 +97,10 @@ function Login() {
           user_password: signupData.user_password,
         },
       });
-
-      setSignupAlert({
-        show: true,
-        message: "User Created Successfully!",
-        type: "success",
-      });
-    } catch (error) {
-      alert(`Signup failed: ${error.message}`);
-      setSignupAlert({
-        show: true,
-        message: "User email already exist. Login instead!",
-        type: "danger",
-      });
+      showAlert("User Created Successfully!");
+      clearSignupForm();
+    } catch {
+      showAlert("User email already exist. Login instead!");
     }
   };
 
@@ -162,9 +157,9 @@ function Login() {
         >
           Signup
         </button>
-        {loginAlert.show && (
-          <div className={`alert alert-${loginAlert.type} mt-3`} role="alert">
-            {loginAlert.message}
+        {alert.show && (
+          <div className={`alert alert-${alert.type} mt-3`} role="alert">
+            {alert.message}
           </div>
         )}
       </div>
@@ -185,12 +180,12 @@ function Login() {
             </div>
             <form onSubmit={handleSignupSubmit}>
               <div className="modal-body">
-                {signupAlert.show && (
+                {alert.show && (
                   <div
-                    className={`alert alert-${signupAlert.type}`}
+                    className={`alert alert-${alert.type} mt-3`}
                     role="alert"
                   >
-                    {signupAlert.message}
+                    {alert.message}
                   </div>
                 )}
                 <input

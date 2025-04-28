@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Query,Depends
 from db.sessions import get_db, create_tables
 from sqlalchemy.orm import Session
 from typing import List
-from db.models.pydantic_models import Token, UserLogin, UsersPydantic,UserCreatePydantic
+from db.models.pydantic_models import Token, UsersPydantic,UserCreatePydantic
 from exceptions import UserAlreadyExistsException, UserNotFoundException, InvalidCredentialException
 from fastapi.security import OAuth2PasswordRequestForm
 
@@ -32,20 +32,6 @@ async def get_user_details(db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
          raise HTTPException(status_code=500, detail=str(e))
-   
-@user_router.get("/users/{user_id}",response_model = UsersPydantic, dependencies=[Depends(get_current_user)])
-async def get_user_by_userid(user_id: int, db: Session = Depends(get_db)):
-    try:
-        return get_user_by_id(user_id=user_id,db=db)
-    except UserNotFoundException as e:
-        raise HTTPException(status_code=404, detail=str(e))
-
-@user_router.get("/users/by-name",response_model = List[UsersPydantic], dependencies=[Depends(get_current_user)])
-async def get_user_by_name(user_name: str = Query(...), db: Session = Depends(get_db)):
-    try:
-        return get_user_by_username(user_name = user_name, db = db)
-    except UserNotFoundException as e:
-        raise HTTPException(status_code=404, detail=str(e))
 
 @user_router.post("/users/signup",response_model= Token)
 async def add_user(user: UserCreatePydantic ,db: Session = Depends(get_db)):
@@ -68,7 +54,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error Occured while Login in") 
         
-
 
 @user_router.put("/users/{user_id}",response_model = UsersPydantic, dependencies=[Depends(get_current_user)])
 async def update_user(user_id : int , user_data: UserCreatePydantic ,db: Session = Depends(get_db)):

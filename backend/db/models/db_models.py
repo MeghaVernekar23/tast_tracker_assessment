@@ -10,8 +10,9 @@ Base = declarative_base()
 
 class UserTask(Base):
     __tablename__ = "user_tasks"
-    user_id = Column(Integer, ForeignKey("users.user_id"), primary_key=True)
-    task_id = Column(Integer, ForeignKey("tasks.task_id"), primary_key=True)
+    user_task_id = Column(Integer,primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
+    task_id = Column(Integer, ForeignKey("tasks.task_id"), nullable=False)
     assigned_date = Column(DateTime)
     due_date = Column(DateTime)
     status = Column(SQLAlchemyEnum(TaskStatusEnum), default=TaskStatusEnum.Pending)

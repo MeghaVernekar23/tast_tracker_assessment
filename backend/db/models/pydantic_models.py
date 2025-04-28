@@ -12,7 +12,6 @@ class UsersPydantic(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-
 class UserCreatePydantic(BaseModel):
     user_name: str
     user_address: Optional[str]
@@ -50,6 +49,18 @@ class UserTaskPydantic(BaseModel):
     due_date: Optional[datetime]
     status: TaskStatusEnum
 
+class TaskCreate(BaseModel):
+    task_name: str
+    task_desc: str
+    task_category: TaskCategoryEnum
+    due_date: Optional[datetime]
+
+class TaskUpdate(BaseModel):
+    task_name: str
+    task_desc: str
+    task_category: TaskCategoryEnum
+    due_date: Optional[datetime]  
+    status: TaskStatusEnum  
 
 class DocumentType(Enum):
     PDF =  "pdf"
