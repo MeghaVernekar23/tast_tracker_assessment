@@ -5,6 +5,6 @@
 - Add some tasks from UI 
 - Create a pipeline file with these stages
     - test stage - pytest should run
-    - build stage - docker builds should happen
+    - build stage - docker builds should happen  ---doubt
     - check - Check health /health endpoint and see if you recive a proper response back
 - Check how to reuse components in react
