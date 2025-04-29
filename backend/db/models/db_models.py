@@ -1,9 +1,10 @@
 
-from sqlalchemy import Column, Integer, String, LargeBinary, ForeignKey, DateTime
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, DateTime
 from sqlalchemy import Enum as SQLAlchemyEnum
-from db.models.pydantic_models import TaskStatusEnum
+from sqlalchemy import ForeignKey, Integer, LargeBinary, String
+from sqlalchemy.orm import declarative_base, relationship
 
+from db.models.pydantic_models import TaskStatusEnum
 
 Base = declarative_base()
 

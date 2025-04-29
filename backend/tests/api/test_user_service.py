@@ -1,14 +1,17 @@
 
 from turtle import update
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
+
 import pytest
-from backend.db.models.pydantic_models import UserCreatePydantic
-from service.user_service import get_all_user,create_user, update_user_details, delete_user_detail, get_user_by_user_email
-from db.models.db_models import Users
-from unittest.mock import MagicMock
-from exceptions import UserNotFoundException, InvalidCredentialException, UserAlreadyExistsException
 from fastapi.security import OAuth2PasswordRequestForm
 
+from backend.db.models.pydantic_models import UserCreatePydantic
+from db.models.db_models import Users
+from exceptions import (InvalidCredentialException, UserAlreadyExistsException,
+                        UserNotFoundException)
+from service.user_service import (create_user, delete_user_detail,
+                                  get_all_user, get_user_by_user_email,
+                                  update_user_details)
 
 mock_user_create = MagicMock()
 mock_user_id = 1

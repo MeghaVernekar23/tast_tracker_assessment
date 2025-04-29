@@ -1,11 +1,15 @@
 
-from fastapi import HTTPException
-from typing import List
-from sqlalchemy.orm import Session
-from db.models.db_models import Tasks, Users, UserTask
-from db.models.pydantic_models import TaskCreate, TasksPydantic, UserTaskPydantic, TaskCreate, TaskUpdate
-from exceptions import TaskNotFoundException, UserNotFoundException
 from datetime import date
+from typing import List
+
+from fastapi import HTTPException
+from sqlalchemy.orm import Session
+
+from db.models.db_models import Tasks, Users, UserTask
+from db.models.pydantic_models import (TaskCreate, TasksPydantic, TaskUpdate,
+                                       UserTaskPydantic)
+from exceptions import TaskNotFoundException, UserNotFoundException
+
 
 def get_user_tasks_details(user_email: str, db: Session):
     user = db.query(Users).filter(Users.user_email == user_email).first()

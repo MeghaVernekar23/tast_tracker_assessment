@@ -1,11 +1,17 @@
-from fastapi import APIRouter, HTTPException,Depends
-from db.sessions import get_db, create_tables
-from sqlalchemy.orm import Session
 from typing import List
-from db.models.pydantic_models import TasksPydantic, TaskCreatePydantic, UserTaskPydantic, TaskCreate, TaskUpdate
-from service.task_service import get_all_tasks, create_task, update_task_detail, delete_task_detail, get_user_tasks_details
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from db.models.pydantic_models import (TaskCreate, TaskCreatePydantic,
+                                       TasksPydantic, TaskUpdate,
+                                       UserTaskPydantic)
+from db.sessions import create_tables, get_db
 from exceptions import TaskNotFoundException, UserNotFoundException
 from service.auth import get_current_user
+from service.task_service import (create_task, delete_task_detail,
+                                  get_all_tasks, get_user_tasks_details,
+                                  update_task_detail)
 
 task_router = APIRouter()
 

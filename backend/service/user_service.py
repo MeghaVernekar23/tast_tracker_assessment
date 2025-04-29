@@ -1,13 +1,14 @@
-from db.models.pydantic_models import  UsersPydantic
-from sqlalchemy.orm import Session
 from typing import List
-from db.models.db_models import Users
-from db.models.pydantic_models import UsersPydantic
-from db.models.pydantic_models import UserCreatePydantic
-from exceptions import UserNotFoundException, UserAlreadyExistsException, InvalidCredentialException
-from fastapi.security import OAuth2PasswordRequestForm
 
-from service.auth import hash_password, create_access_token, verify_password
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+
+from db.models.db_models import Users
+from db.models.pydantic_models import UserCreatePydantic, UsersPydantic
+from exceptions import (InvalidCredentialException, UserAlreadyExistsException,
+                        UserNotFoundException)
+from service.auth import create_access_token, hash_password, verify_password
+
 
 def get_all_user(db: Session) -> List[UsersPydantic]:
     """Get list of all Users"""
@@ -45,8 +46,9 @@ def create_user(user: UserCreatePydantic , db: Session) -> dict:
     access_token = create_access_token(data={"sub": new_user_data.user_name})
     return {"access_token": access_token, "token_type": "bearer"}
 
+
+
 def update_user_details(user_id: int, user_data:UserCreatePydantic, db: Session)-> UsersPydantic:
-    
     user =  db.get(Users, user_id)
     if not user:
          raise UserNotFoundException()
@@ -58,7 +60,6 @@ def update_user_details(user_id: int, user_data:UserCreatePydantic, db: Session)
     return user
    
 def delete_user_detail(user_id: int,db: Session)->str:
-    """Delete users"""
     user =  db.get(Users, user_id)
     if not user:
          raise UserNotFoundException()

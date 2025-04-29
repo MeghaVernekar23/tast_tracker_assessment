@@ -1,9 +1,9 @@
-from passlib.context import CryptContext
-from jose import JWTError, jwt
 from datetime import datetime, timedelta
+
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends
-from fastapi import HTTPException, status
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 
 SECRET_KEY = "secret_key"
 ALGORITHM = "HS256"

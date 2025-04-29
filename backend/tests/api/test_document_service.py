@@ -1,9 +1,11 @@
 
-from db.models.db_models import Documents
 from unittest.mock import MagicMock
+
 import pytest
-from service.document_service import save_document
+
+from db.models.db_models import Documents
 from exceptions import DuplicateFileException
+from service.document_service import save_document
 
 
 @pytest.fixture

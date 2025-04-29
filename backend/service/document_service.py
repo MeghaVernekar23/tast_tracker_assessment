@@ -1,9 +1,12 @@
 
-from db.models.db_models import Documents
-from sqlalchemy.orm import Session
-from exceptions import DuplicateFileException, FileNotFoundException
-from fastapi.responses import StreamingResponse
 import io
+
+from fastapi.responses import StreamingResponse
+from sqlalchemy.orm import Session
+
+from db.models.db_models import Documents
+from exceptions import DuplicateFileException, FileNotFoundException
+
 
 def save_document(document_name: str,document_type: str, document_data: bytes, db: Session):
     document_exists  = db.query(Documents).filter(Documents.document_name == document_name).first()

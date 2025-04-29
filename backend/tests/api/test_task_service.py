@@ -1,9 +1,15 @@
-from unittest.mock import MagicMock
-import pytest
-from service.task_service import get_all_tasks, create_task, update_task_detail, delete_task_detail
-from db.models.db_models import Tasks, UserTask, Users
-from exceptions import TaskNotFoundException, UserNotFoundException
 from datetime import date
+from unittest.mock import MagicMock
+
+import pytest
+
+from db.models.db_models import Tasks, Users, UserTask
+from db.models.pydantic_models import UserTaskPydantic
+from exceptions import TaskNotFoundException, UserNotFoundException
+from service.task_service import (create_task, delete_task_detail,
+                                  get_all_tasks, get_user_tasks_details,
+                                  update_task_detail)
+
 
 @pytest.fixture
 def mock_user():
@@ -30,8 +36,32 @@ def mock_user_task():
     return UserTask(
         task_id = 1,
         user_id = 1,
-        assigned_date = "",
-        due_date = "",
+        assigned_date = date.today(),
+        due_date = date.today(),
+        status = "Pending"
+    )
+
+@pytest.fixture
+def mock_user_task_with_task(mock_task):
+    user_task = UserTask(
+        task_id=1,
+        user_id=1,
+        assigned_date=date.today(),
+        due_date=date.today(),
+        status="Pending"
+    )
+    user_task.task = mock_task
+    return user_task
+
+@pytest.fixture
+def mock_user_task_pydantic():
+    return UserTaskPydantic(
+        task_id=1,
+        task_name = "Studying", 
+        task_desc = 'Studying', 
+        task_category = 'others',
+        assigned_date = date.today(),
+        due_date = date.today(),
         status = "Pending"
     )
 
@@ -53,7 +83,7 @@ def mock_task_update():
         due_date = date.today()
         status = "Pending"
     return MockTaskUpdate()
-()
+
 
 
 
@@ -79,7 +109,8 @@ def test_create_task_user_not_found(get_mock_session,mock_task_create,mock_user)
     get_mock_session.query.return_value.filter.return_value.first.return_value = None
     with pytest.raises(UserNotFoundException):
         create_task(mock_task_create, get_mock_session, mock_user.user_email)
-    
+
+
 
 def test_create_task(get_mock_session,mock_task_create,mock_user):
 
@@ -124,3 +155,18 @@ def test_delete_task_not_found(get_mock_session):
     get_mock_session.query.return_value.filter.return_value.first.return_value = None
     with pytest.raises(TaskNotFoundException):
         delete_task_detail(1, get_mock_session)    
+
+def test_get_user_tasks_details(mock_user,mock_user_task_with_task,mock_user_task_pydantic,get_mock_session):
+    mock_query = MagicMock()
+    mock_query.filter.return_value.first.return_value = mock_user
+    
+    mock_task_query = MagicMock()
+    mock_task_query.join.return_value.filter.return_value.all.return_value = [mock_user_task_with_task]
+    get_mock_session.query.side_effect = [mock_query, mock_task_query]
+    result = get_user_tasks_details(mock_user.user_email, get_mock_session)
+    assert result == [mock_user_task_pydantic]
+
+def test_get_user_tasks_details_not_found(mock_user,get_mock_session):
+    get_mock_session.query.return_value.filter.return_value.first.return_value = []
+    with pytest.raises(UserNotFoundException):
+        get_user_tasks_details(mock_user.user_email, get_mock_session)  
