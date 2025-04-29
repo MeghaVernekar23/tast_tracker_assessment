@@ -4,6 +4,7 @@ import { apiRequest } from "../utils/Apirequest";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { AlertMessage } from "../utils/Alert";
 
 function Login() {
   const navigate = useNavigate();
@@ -157,11 +158,11 @@ function Login() {
         >
           Signup
         </button>
-        {alert.show && (
-          <div className={`alert alert-${alert.type} mt-3`} role="alert">
-            {alert.message}
-          </div>
-        )}
+        <AlertMessage
+          show={alert.show}
+          type={alert.type}
+          message={alert.message}
+        />
       </div>
 
       <div
@@ -180,14 +181,11 @@ function Login() {
             </div>
             <form onSubmit={handleSignupSubmit}>
               <div className="modal-body">
-                {alert.show && (
-                  <div
-                    className={`alert alert-${alert.type} mt-3`}
-                    role="alert"
-                  >
-                    {alert.message}
-                  </div>
-                )}
+                <AlertMessage
+                  show={alert.show}
+                  type={alert.type}
+                  message={alert.message}
+                />
                 <input
                   type="text"
                   name="user_name"

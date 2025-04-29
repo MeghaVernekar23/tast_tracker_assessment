@@ -4,12 +4,15 @@ import { apiRequest } from "../utils/Apirequest";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal } from "bootstrap";
+import { AlertMessage } from "../utils/Alert";
+import { Datatable } from "../utils/Datatable";
 
 function Dashboard() {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("current_user"));
   const token = localStorage.getItem("access_token");
   const [tasks, setTasks] = useState([]);
+
   const [taskAlert, setTaskAlert] = useState({
     show: false,
     message: "",
@@ -42,6 +45,34 @@ function Dashboard() {
   const [editingTaskId, setEditingTaskId] = useState(null);
 
   const [deleteTaskId, setdeleteTaskId] = useState(null);
+
+  const taskColumn = [
+    { key: "task_name", label: "Name" },
+    { key: "task_desc", label: "Description" },
+    { key: "task_category", label: "Category" },
+    { key: "assigned_date", label: "Assigned Date" },
+    { key: "due_date", label: "Due Date" },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span className={getStatusBadgeClass(row.status)}>{row.status}</span>
+      ),
+    },
+  ];
+
+  const actions = [
+    {
+      label: "Edit",
+      icon: "bi-pencil",
+      onClick: (row) => handleEdit(row.task_id),
+    },
+    {
+      label: "Delete",
+      icon: "bi-trash",
+      onClick: (row) => handleDelete(row.task_id),
+    },
+  ];
 
   useEffect(() => {
     fetchTasks();
@@ -247,11 +278,11 @@ function Dashboard() {
       </nav>
 
       <div className="container my-5">
-        {taskAlert.show && (
-          <div className={`alert alert-${taskAlert.type} mt-3`} role="alert">
-            {taskAlert.message}
-          </div>
-        )}
+        <AlertMessage
+          show={taskAlert.show}
+          type={taskAlert.type}
+          message={taskAlert.message}
+        />
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h3>Your Task</h3>
           <button
@@ -266,55 +297,7 @@ function Dashboard() {
             Add Task
           </button>
         </div>
-        <div className="table-responsive">
-          <table className="table table-striped table-bordered ">
-            <thead className="table-dark">
-              <tr>
-                <th className="fw-bold">Name</th>
-                <th className="fw-bold">Description</th>
-                <th className="fw-bold">Category</th>
-                <th className="fw-bold">Assigned Date</th>
-                <th className="fw-bold">Due Date</th>
-                <th className="fw-bold">Status</th>
-                <th className="fw-bold">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.length > 0 ? (
-                tasks.map((task) => (
-                  <tr key={task.task_id}>
-                    <td className="align-middle">{task.task_name}</td>
-                    <td className="align-middle">{task.task_desc}</td>
-                    <td className="align-middle">{task.task_category}</td>
-                    <td className="align-middle">{task.assigned_date}</td>
-                    <td className="align-middle">{task.due_date}</td>
-                    <td className="align-middle">
-                      <span className={getStatusBadgeClass(task.status)}>
-                        {task.status}
-                      </span>
-                    </td>
-                    <td className="text-end align-middle">
-                      <i
-                        className="bi bi-pencil me-3"
-                        onClick={() => handleEdit(task.task_id)}
-                      ></i>
-                      <i
-                        className="bi bi-trash"
-                        onClick={() => handleDelete(task.task_id)}
-                      ></i>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7" className="text-center text-muted py-3">
-                    No tasks available.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+        <Datatable columns={taskColumn} data={tasks} actions={actions} />
         <div
           className="modal fade"
           id="addTaskModal"
