@@ -1,0 +1,18 @@
+1. Check and configure ruff formatter for python
+    - Read about ruff and why it is needed
+    - Configure them in the pipeline aswell
+
+2. Admin and Non-admin roles must be configured easily from UI and backend
+    - Admin must see all data of users
+    - Admin must be able to add new users
+    - Admin must be able to add new tasks to new users
+    - Admin can make others also as admins
+
+3. Non admins must only be able to see their data
+4. The cypress configurations which already exists must have 2 automated test cases for the above scenarios
+5. Read about PEP8 format and why it is important in python. 
+6. In Day7 you read about CORS, now add this in FastAPI backend code and test it.
+7. Read about design patterns. Check in Youtube Arjan codes Python Design patterns
+    - Make a small documentation about design patterns
+    - Write an code example in this document about each design pattern
+    - Example? A small python script which contains singleton patterns which is executable. Make examples for all design patterns 
