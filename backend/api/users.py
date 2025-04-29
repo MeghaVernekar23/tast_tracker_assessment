@@ -9,8 +9,6 @@ from exceptions import UserAlreadyExistsException, UserNotFoundException, Invali
 from fastapi.security import OAuth2PasswordRequestForm
 
 from service.user_service import get_all_user
-from service.user_service import get_user_by_id
-from service.user_service import get_user_by_username
 from service.user_service import create_user
 from service.user_service import update_user_details
 from service.user_service import delete_user_detail, get_user_by_user_email
