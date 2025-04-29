@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from api.users import user_router
-from api.tasks import task_router
+from fastapi.middleware.cors import CORSMiddleware
+
 from api.documents import document_router
 from api.health import health_router
-from fastapi.middleware.cors import CORSMiddleware
+from api.tasks import task_router
+from api.users import user_router
 
 app = FastAPI(title="Task Tracker API",
     description="Task Tracker API",)
