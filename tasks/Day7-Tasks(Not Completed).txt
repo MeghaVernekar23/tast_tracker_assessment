@@ -16,6 +16,8 @@
     - Automate the adding, deleting and updating the tasks via cypress
 
 3. Once this is done, make a tag in Github with version as 1.0.0
+    - Subtask: What is git rebase? Make a small document explaning the same. 
+    - Document name: git-rebase.txt. It should contain all steps to do rebase
 
 4. Check and read about docker volumes as to how to properly mount them into the docker containers
     - Make the SqliteDB persistent(It should not be created new one the container restarts)
