@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { AlertMessage } from "../utils/Alert";
+import { InputFormModal } from "../utils/FormModal";
+import { Modal } from "bootstrap";
 
 function Login() {
   const navigate = useNavigate();
@@ -98,10 +100,23 @@ function Login() {
           user_password: signupData.user_password,
         },
       });
-      showAlert("User Created Successfully!");
+
       clearSignupForm();
+      closeModal("signupModal");
+      showAlert("User Created Successfully!");
     } catch {
       showAlert("User email already exist. Login instead!");
+    }
+  };
+
+  const closeModal = (modalId) => {
+    const modalElement = document.getElementById(modalId);
+    const modalInstance = Modal.getOrCreateInstance(modalElement);
+    modalInstance.hide();
+
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    if (modalBackdrop) {
+      modalBackdrop.remove();
     }
   };
 
@@ -165,91 +180,49 @@ function Login() {
         />
       </div>
 
-      <div
-        className="modal fade"
-        id="signupModal"
-        tabIndex="-1"
-        aria-labelledby="signupModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="signupModalLabel">
-                Signup
-              </h5>
-            </div>
-            <form onSubmit={handleSignupSubmit}>
-              <div className="modal-body">
-                <AlertMessage
-                  show={alert.show}
-                  type={alert.type}
-                  message={alert.message}
-                />
-                <input
-                  type="text"
-                  name="user_name"
-                  className="form-control mb-2"
-                  placeholder="Username"
-                  value={signupData.user_name}
-                  onChange={handleSignupChange}
-                  required
-                />
-                <input
-                  type="email"
-                  name="user_email"
-                  className="form-control mb-2"
-                  placeholder="Email"
-                  value={signupData.user_email}
-                  onChange={handleSignupChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="user_phone_no"
-                  className="form-control mb-2"
-                  placeholder="Phone"
-                  value={signupData.user_phone_no}
-                  onChange={handleSignupChange}
-                  pattern="^\+?[0-9]*$"
-                  required
-                />
-                <input
-                  type="text"
-                  name="user_address"
-                  className="form-control mb-2"
-                  placeholder="Place"
-                  value={signupData.user_address}
-                  onChange={handleSignupChange}
-                  required
-                />
-                <input
-                  type="password"
-                  name="user_password"
-                  className="form-control"
-                  placeholder="Password"
-                  value={signupData.user_password}
-                  onChange={handleSignupChange}
-                  required
-                />
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-outline-dark"
-                  data-bs-dismiss="modal"
-                  onClick={clearSignupForm}
-                >
-                  Close
-                </button>
-                <button type="submit" className="btn btn-outline-primary">
-                  Create Account
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <InputFormModal
+        modalId="signupModal"
+        title={"Sign up"}
+        fields={[
+          {
+            name: "user_name",
+            type: "text",
+            placeholder: "User Name",
+            required: true,
+          },
+          {
+            name: "user_email",
+            type: "email",
+            placeholder: "Email",
+            required: true,
+          },
+          {
+            name: "user_phone_no",
+            type: "text",
+            placeholder: "Phone",
+            pattern: "^\\+?[0-9]{10,13}$",
+            required: true,
+          },
+          {
+            name: "user_address",
+            type: "text",
+            placeholder: "Place",
+            required: true,
+          },
+          {
+            name: "user_password",
+            type: "password",
+            placeholder: "Password",
+            required: true,
+          },
+        ]}
+        formData={signupData}
+        onChange={handleSignupChange}
+        onSubmit={handleSignupSubmit}
+        clearForm={clearSignupForm}
+        alert={alert}
+        showAlert={showAlert}
+      />
     </div>
   );
 }

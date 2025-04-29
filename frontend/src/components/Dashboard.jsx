@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal } from "bootstrap";
 import { AlertMessage } from "../utils/Alert";
 import { Datatable } from "../utils/Datatable";
+import { InputFormModal } from "../utils/FormModal";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -263,8 +264,12 @@ function Dashboard() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Profile
+                <a
+                  className="nav-link"
+                  data-bs-toggle="modal"
+                  data-bs-target="#updateProfile"
+                >
+                  update Profile
                 </a>
               </li>
               <li className="nav-item">
@@ -298,114 +303,130 @@ function Dashboard() {
           </button>
         </div>
         <Datatable columns={taskColumn} data={tasks} actions={actions} />
-        <div
-          className="modal fade"
-          id="addTaskModal"
-          tabIndex="-1"
-          aria-labelledby="addTaskModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              {editingTaskId !== null ? (
-                <div className="modal-header">
-                  <h5 className="modal-title" id="addTaskModalLabel">
-                    Edit Task
-                  </h5>
-                </div>
-              ) : (
-                <div className="modal-header">
-                  <h5 className="modal-title" id="addTaskModalLabel">
-                    Add Task
-                  </h5>
-                </div>
-              )}
+        <InputFormModal
+          modalId="updateProfile"
+          title={editingTaskId !== null ? "Edit Task" : "Add Task"}
+          fields={[
+            {
+              name: "task_name",
+              type: "text",
+              placeholder: "Task Name",
+              required: true,
+              disabled: editingTaskId !== null,
+            },
+            {
+              name: "task_desc",
+              type: "text",
+              placeholder: "Task Description",
+              required: true,
+              disabled: false,
+            },
+            {
+              name: "task_category",
+              type: "select",
+              placeholder: "Select Category",
+              required: true,
+              disabled: editingTaskId !== null,
+              options: [
+                { value: "fitness", label: "Fitness" },
+                { value: "study", label: "Study" },
+                { value: "others", label: "Others" },
+              ],
+            },
+            {
+              name: "due_date",
+              type: "date",
+              placeholder: "Due Date",
+              required: true,
+              disabled: false,
+              min: new Date().toISOString().split("T")[0],
+            },
+            ...(editingTaskId !== null
+              ? [
+                  {
+                    name: "status",
+                    type: "select",
+                    placeholder: "Select Status",
+                    required: true,
+                    disabled: false,
+                    options: [
+                      { value: "Pending", label: "Pending" },
+                      { value: "In Progress", label: "In Progress" },
+                      { value: "Completed", label: "Completed" },
+                    ],
+                  },
+                ]
+              : []),
+          ]}
+          formData={addTaskData}
+          onChange={handleAddTaskChange}
+          onSubmit={addUpdateTask}
+          clearForm={clearAddTaskForm}
+          isEditing={editingTaskId !== null}
+        />
 
-              <form onSubmit={addUpdateTask}>
-                <div className="modal-body">
-                  <input
-                    type="text"
-                    name="task_name"
-                    className="form-control mb-2"
-                    placeholder="Taskname"
-                    value={addTaskData.task_name}
-                    onChange={handleAddTaskChange}
-                    required
-                    disabled={editingTaskId !== null}
-                  />
-                  <input
-                    type="text"
-                    name="task_desc"
-                    className="form-control mb-2"
-                    placeholder="Task Description"
-                    value={addTaskData.task_desc}
-                    onChange={handleAddTaskChange}
-                    required
-                  />
-                  <select
-                    name="task_category"
-                    className="form-control mb-2"
-                    value={addTaskData.task_category}
-                    onChange={handleAddTaskChange}
-                    required
-                    disabled={editingTaskId !== null}
-                  >
-                    <option value="">Select Category</option>
-                    <option value="fitness">Fitness</option>
-                    <option value="study">Study</option>
-                    <option value="others">Others</option>
-                  </select>
-                  <input
-                    type="date"
-                    name="due_date"
-                    className="form-control mb-2"
-                    placeholder="Task Due Date"
-                    value={addTaskData.due_date}
-                    onChange={handleAddTaskChange}
-                    min={new Date().toISOString().split("T")[0]}
-                    required
-                  />
-                  {editingTaskId !== null && (
-                    <select
-                      name="status"
-                      className="form-control mb-2"
-                      value={addTaskData.status}
-                      onChange={handleAddTaskChange}
-                      required
-                    >
-                      <option value="">Select Status</option>
-                      <option value="Pending">Pending</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
-                    </select>
-                  )}
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-outline-dark"
-                      data-bs-dismiss="modal"
-                      onClick={() => {
-                        clearAddTaskForm();
-                        fetchTasks();
-                      }}
-                    >
-                      Close
-                    </button>
-                    {editingTaskId !== null ? (
-                      <button type="submit" className="btn btn-outline-primary">
-                        Edit Task
-                      </button>
-                    ) : (
-                      <button type="submit" className="btn btn-outline-primary">
-                        Add Task
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <InputFormModal
+          modalId="addTaskModal"
+          title={editingTaskId !== null ? "Edit Task" : "Add Task"}
+          fields={[
+            {
+              name: "task_name",
+              type: "text",
+              placeholder: "Task Name",
+              required: true,
+              disabled: editingTaskId !== null,
+            },
+            {
+              name: "task_desc",
+              type: "text",
+              placeholder: "Task Description",
+              required: true,
+              disabled: false,
+            },
+            {
+              name: "task_category",
+              type: "select",
+              placeholder: "Select Category",
+              required: true,
+              disabled: editingTaskId !== null,
+              options: [
+                { value: "fitness", label: "Fitness" },
+                { value: "study", label: "Study" },
+                { value: "others", label: "Others" },
+              ],
+            },
+            {
+              name: "due_date",
+              type: "date",
+              placeholder: "Due Date",
+              required: true,
+              disabled: false,
+              min: new Date().toISOString().split("T")[0],
+            },
+            ...(editingTaskId !== null
+              ? [
+                  {
+                    name: "status",
+                    type: "select",
+                    placeholder: "Select Status",
+                    required: true,
+                    disabled: false,
+                    options: [
+                      { value: "Pending", label: "Pending" },
+                      { value: "In Progress", label: "In Progress" },
+                      { value: "Completed", label: "Completed" },
+                    ],
+                  },
+                ]
+              : []),
+          ]}
+          formData={addTaskData}
+          onChange={handleAddTaskChange}
+          onSubmit={addUpdateTask}
+          clearForm={clearAddTaskForm}
+          isEditing={editingTaskId !== null}
+        />
+
         <div
           className="modal fade"
           id="deleteTaskModal"
