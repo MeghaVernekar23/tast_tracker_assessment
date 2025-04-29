@@ -36,10 +36,28 @@ jobs:
           - name: Sleep for app startup
             run: sleep 10    
 
-          - name: Health Check Application
+          - name: Backend Application Fast API health check
             run: |
-                cd backend
-                curl --fail http://localhost:8000/health || exit 1       
+                
+                response=$(curl -s http://127.0.0.1:8000/health/)
+                echo "Response: $response"
+                if [ "$response" == '{"status":"ok"}' ]; then
+                   echo "Health check passed"
+                else
+                   echo "Health check failed"
+                   exit 1
+                fi
+
+          - name: frontend Application React health check
+            run: |
+               response=$(curl -s http://localhost:5173/)
+               echo "Response: $response"
+               if [[ "$response" == *"Login Page"* ]]; then
+                 echo "Frontend health check passed"
+               else
+                 echo "Frontend health check failed"
+               exit 1
+               fi      
 
     test:
       needs: build
