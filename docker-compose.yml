@@ -27,5 +27,6 @@ services:
     networks:
       - task_network   
     volumes:
-      - ./frontend:/frontend         
-    command: npm run dev -- --host
+      - ./frontend:/frontend 
+    working_dir: /frontend          
+    command: sh -c "npm install && npm run dev -- --host"

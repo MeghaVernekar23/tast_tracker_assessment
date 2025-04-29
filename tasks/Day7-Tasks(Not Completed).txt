@@ -1,0 +1,26 @@
+1. Check whether you have these things before you proceed
+    - Now you must have a working react app, fastapi server.
+    - React app must have a login and once user logs in a dashboard must be displayed with his tasks
+    - User must be able to create new tasks, delete and update tasks from UI
+    - Fastapi server holds all backend code for User module and Tasks module
+    - There are tests written for backend in pytest
+    - There are docker containers with docker-compose.yaml file
+    - Github pipeline which has stages (Linting, Testing and building stage)
+        - The pipeline must have liniting
+        - The pipeline must have pytests which runs as a seperate stage
+        - The pipeline must build containers and check whether /health in backend works and /login in frontend works
+    - DO NOT PROCEED IF THESE ARE NOT COMPLETED
+
+2. Now please add a minimal cypress configurations to the react app
+    - Write small tests to dashboard page
+    - Automate the adding, deleting and updating the tasks via cypress
+
+3. Once this is done, make a tag in Github with version as 1.0.0
+
+4. Check and read about docker volumes as to how to properly mount them into the docker containers
+    - Make the SqliteDB persistent(It should not be created new one the container restarts)
+
+5. Read about CORS and see how to implemenet them in the Fastapi application.
+
+
+Day6 task pending : - build stage - docker builds should happen

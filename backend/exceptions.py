@@ -33,6 +33,6 @@ class UserAlreadyExistsException(Exception):
 
 class InvalidCredentialException(Exception):
 
-    def __init__(self):
-        self.message = "Invalid Credential"
+    def __init__(self, message="Invalid Credential"):
+        self.message = message
         super().__init__((self.message))    
