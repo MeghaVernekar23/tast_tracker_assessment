@@ -20,4 +20,7 @@
 4. Check and read about docker volumes as to how to properly mount them into the docker containers
     - Make the SqliteDB persistent(It should not be created new one the container restarts)
 
-5. Read about CORS and see how to implemenet them in the Fastapi application. 
+5. Read about CORS and see how to implemenet them in the Fastapi application.
+
+
+Day6 task pending : - build stage - docker builds should happen
