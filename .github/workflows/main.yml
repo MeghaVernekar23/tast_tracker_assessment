@@ -4,7 +4,7 @@ name: task-tracker pipeline
 on:
     push:                   
       branches:
-        - day6 
+        - day7 
 
 jobs:
     build:
@@ -13,6 +13,11 @@ jobs:
         steps:
           - name: Checkout code
             uses: actions/checkout@v4
+
+          - name: Set up Docker Compose
+            run: |
+              sudo apt-get update
+              sudo apt-get install docker-compose -y   
 
           - name: set up python
             uses: actions/setup-python@v5
@@ -23,6 +28,18 @@ jobs:
             run: |
                 cd backend
                 pip install -r requirements.txt
+
+          - name: execute docker compose file
+            run: |
+              docker-compose up -d    
+
+          - name: Sleep for app startup
+            run: sleep 10    
+
+          - name: Health Check Application
+            run: |
+                cd backend
+                curl --fail http://localhost:8000/health || exit 1       
 
     test:
       needs: build
@@ -45,16 +62,9 @@ jobs:
           run: |
               cd backend
               nohup uvicorn main:app --host 0.0.0.0 --port 8000 &
-              sleep 10
-        
-        - name: Health Check Application
-          run: |
-              curl --fail http://localhost:8000/health || exit 1      
+              sleep 10     
               
         - name: Run Tests
           run: |
             cd backend
-            pytest      
-
-        
-        
+            pytest
